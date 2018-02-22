@@ -89,9 +89,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 app.use(_express2.default.static('public'));
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
 
-    res.send((0, _renderer2.default)());
+    res.send((0, _renderer2.default)(req));
 });
 
 app.listen(3000, function () {
@@ -165,17 +165,60 @@ var _react2 = _interopRequireDefault(_react);
 
 var _server = __webpack_require__(3);
 
+var _reactRouterDom = __webpack_require__(7);
+
+var _routes = __webpack_require__(6);
+
+var _routes2 = _interopRequireDefault(_routes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (req) {
+    var content = (0, _server.renderToString)(_react2.default.createElement(
+        _reactRouterDom.StaticRouter,
+        { location: req.path, context: {} },
+        _react2.default.createElement(_routes2.default, null)
+    ));
+
+    return '\n        <html>\n            <head></head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script src="scripts.js"></script>\n            </body>\n        </html>\n    ';
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
 var _Home = __webpack_require__(4);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _reactRouterDom = __webpack_require__(7);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
-    var content = (0, _server.renderToString)(_react2.default.createElement(_Home2.default, null));
-
-    return '\n        <html>\n            <head></head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script src="scripts.js"></script>\n            </body>\n        </html>\n    ';
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default })
+    );
 };
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router-dom");
 
 /***/ })
 /******/ ]);
